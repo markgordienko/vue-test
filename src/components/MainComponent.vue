@@ -15,7 +15,7 @@
 
 <script>
 import Modal from './ModalComponent/Modal.vue';
-import DataTable from './DataTable.vue';
+import DataTable from './DataTableComponent/DataTable.vue';
 import AddIcon from 'vue-material-design-icons/AccountPlus.vue';
 
 
@@ -33,11 +33,9 @@ export default {
     };
   },
   mounted() {
-console.log(localStorage)
   },
   methods: {
     closeModal() {
-        localStorage.test = "newName";
         this.showModal = false;
       },
       test() {

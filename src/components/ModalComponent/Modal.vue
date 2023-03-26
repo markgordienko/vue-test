@@ -36,7 +36,7 @@
                 type="text">
             </li>
             <li class="form-row">
-              <label for="townborn"> Телефон </label>
+              <label> Телефон </label>
               <input 
                 v-model="employeePhoneNumber"
                 type="text">
@@ -45,14 +45,14 @@
               <label for="email"> Начальник </label>
               <SelectComponent
                 :options="opt"
+                v-model="supervisorName"
                 class="select"
-                @input="te($event)"
+                @input="supervisorPos = $event"
               />
             </li>
             <li class="form-row">
               <button 
-                type="submit" 
-                @click="saveUser"> Сохранить </button>
+                @click="test"> Сохранить </button>
             </li>
           </ul>
         </section>
@@ -81,29 +81,41 @@ import SelectComponent from "./SelectComponent.vue";
     return {
       employeeName: "",
       employeePhoneNumber: "",
-      sel: "",
-      supervisor: ""
+      id: "",
+      supervisorName: "",
+      supervisorPos: 0,
+      supervisorId: ""
     };
   },
   computed: {
     opt() {
-      const ar = [];
+      const ar = ["Отсутствует"];
       this.data.forEach((el) => {
-        ar.push(el.name);
+        ar.push(el.employeeName);
 });
       return ar;
     }
   },
     methods: {
+      uuidv4() {
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+},
       close() {
         this.$emit('close');
       },
-      saveUser() {
-        this.data.push({name: this.employeeName, phone: this.employeePhoneNumber, boss: this.supervisor});
-        this.$emit('close');
+      test() {
+        let supervisorId = this.supervisorPos === 0 ? null : this.data[this.supervisorPos - 1].employeeId;
+        console.log(supervisorId);
+
+        this.data.push({employeeName: this.employeeName, employeeId: this.uuidv4(),
+          employeePhoneNumber: this.employeePhoneNumber, 
+          supervisorId: supervisorId});
       },
       te(val) {
-console.log(val)
+        
+        // console.log(val)
       }
     },
   };

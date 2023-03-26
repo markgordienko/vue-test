@@ -2,7 +2,7 @@
 
   <div >
     <table 
-      v-if="rows.length > 0" 
+      v-if="filteredRows.length > 0" 
       class="table"
     >
       <thead>
@@ -19,27 +19,49 @@
           </th>
         </tr>
       </thead>
-      <tbody>
+      <!-- <tbody>
         <tr 
-          v-for="row in rows" 
+          v-for="row in filteredRows"
           :key="row.code">
           <td
             v-for="column in columns"
             :key="column.dataKey"
             :class="column.align"
-          >
+            @click="test(row)">
             {{ row[column.dataKey] }}
           </td>
         </tr>
-      </tbody>
+      </tbody> -->
+      <!-- <tbody> -->
+      
+      <!-- </tbody> -->
     </table>
-    <h1 v-else>Таблица пока пуста :(</h1>
+    <ExpandableRow 
+      v-for="row in filteredRows"
+      :is-expanded="isExp(row)"
+      :key="row.employeeId"
+      :row="row"
+      :rows="rows"
+      :frows="getF(row)"
+      :columns="columns"
+      :test="test"
+      @expand="updateRowExpansion($event.employeeId)"/>
+      <!-- <h1 v-else>Таблица пока пуста :(</h1> -->
   </div>
 </template>
   
   <script>
+// import ExpandableRow from './ExpandableRow.vue';
+  import ExpandableRow from "./ExpandableRow.vue";
+
+
   export default {
     name: "DataTable",
+    comments: {
+      ExpandableRow
+      // ExpandableRow: () => import('./ExpandableRow.vue')
+    },
+  components: { ExpandableRow },
     props: {
         data: {
             type: Array,
@@ -52,38 +74,58 @@
         showModal: false,
         columns: [
             {
-            dataKey: "name",
+            dataKey: "employeeName",
             name: "Имя",
             align: "left",
         },
         {
-          dataKey: "phone",
+          dataKey: "employeePhoneNumber",
           name: "Телефон",
           align: "left",
         },],
-        rows: [
-        {
-          name: "CAM1",
-          phone: 1,
-        },
-        {
-          name: "CAM2",
-          phone: 2,
-        },
-        ]
-
+        isChildExpanded: false,
+        expandedRowsIds: [],
       };
+    },
+    computed: {
+        filteredRows() {
+            return this.data.filter(row => !row.supervisorId);
+        },
     },
     mounted() {
         this.rows = this.data;
   console.log(this.data)
     },
     methods: {
+      click(val) {
+console.log(val)
+    },
       closeModal() {
-          localStorage.test = "newName";
           this.showModal = false;
+        },
+        test(val) {
+        console.log(val)
+        },
+        getF(val) {
+      return this.rows.filter(row => row.supervisorId === val.employeeId);
+    },
+    isExp(row) {
+      if (this.expandedRowsIds.includes(row.employeeId)) {
+        return true;
+      } else return false
+    },
+    updateRowExpansion(employeeId) {
+      if (!this.expandedRowsIds.includes(employeeId)) {
+        this.expandedRowsIds.push(employeeId);
+      } else {
+        let index = this.expandedRowsIds.indexOf(employeeId);
+        if (index !== -1) {
+          this.expandedRowsIds.splice(index, 1);
         }
+      }
     }
+  }
+    
   };
   </script>
   
@@ -141,6 +183,7 @@ table {
 }
 th,
 td {
+  width: 50%;
   padding: 15px;
   background-color: rgba(255,255,255,0.2);
   color: #fff;
@@ -156,7 +199,7 @@ tbody td {
   position: relative;
   border: 2px solid rgba(255,255,255,0.3);
 }
-tbody td:hover:before {
+/* tbody td:hover:before {
     content: "";
     position: absolute;
     left: 0;
@@ -165,9 +208,6 @@ tbody td:hover:before {
     bottom: -9999px;
     background-color: rgba(255,255,255,0.2);
     z-index: -1;
-}
-
-
-
-  </style>
+} */
+</style>
   
