@@ -35,10 +35,9 @@ export default {
     data(newVal) {
       let jsonString = JSON.stringify(newVal);
       localStorage.data = jsonString;
-    }
+    },
   },
   mounted() {
-    
     if (localStorage.data) {
       const data = JSON.parse(localStorage.data);
       this.data.push(...data);

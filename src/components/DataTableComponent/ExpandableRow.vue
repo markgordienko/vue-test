@@ -43,56 +43,56 @@ import ExpandedIcon from "vue-material-design-icons/ChevronUp.vue";
 import CollapsedIcon from "vue-material-design-icons/ChevronDown.vue";
 
 export default {
-    name: "ExpandableRow",
-    components: { ExpandedIcon, CollapsedIcon },
-    props: {
-        parentRow: {
-            type: Object,
-            required: true,
-        },
-        allRows: {
-            type: Array,
-            required: true,
-        },
-        filteredRows: {
-            type: Array,
-            required: true,
-        },
-        columns: {
-            type: Array,
-            required: true,
-        },
-        isExpanded: {
-            type: Boolean,
-            required: true,
-        },
+  name: "ExpandableRow",
+  components: { ExpandedIcon, CollapsedIcon },
+  props: {
+    parentRow: {
+      type: Object,
+      required: true,
     },
-    data: function () {
-        return {
-            isChildExpanded: false,
-            expandedRowsIds: [],
-        };
+    allRows: {
+      type: Array,
+      required: true,
     },
-    methods: {
-        getFilteredRows(val) {
-            return this.allRows.filter((row) => row.supervisorId === val.employeeId);
-        },
-        isExp(row) {
-            if (this.expandedRowsIds.includes(row.employeeId)) {
-                return true;
-            } else return false;
-        },
-        updateRowExpansion(employeeId) {
-            if (!this.expandedRowsIds.includes(employeeId)) {
-                this.expandedRowsIds.push(employeeId);
-            } else {
-                let index = this.expandedRowsIds.indexOf(employeeId);
-                if (index !== -1) {
-                    this.expandedRowsIds.splice(index, 1);
-                }
-            }
-        },
+    filteredRows: {
+      type: Array,
+      required: true,
     },
+    columns: {
+      type: Array,
+      required: true,
+    },
+    isExpanded: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  data: function () {
+    return {
+      isChildExpanded: false,
+      expandedRowsIds: [],
+    };
+  },
+  methods: {
+    getFilteredRows(val) {
+      return this.allRows.filter((row) => row.supervisorId === val.employeeId);
+    },
+    isExp(row) {
+      if (this.expandedRowsIds.includes(row.employeeId)) {
+        return true;
+      } else return false;
+    },
+    updateRowExpansion(employeeId) {
+      if (!this.expandedRowsIds.includes(employeeId)) {
+        this.expandedRowsIds.push(employeeId);
+      } else {
+        let index = this.expandedRowsIds.indexOf(employeeId);
+        if (index !== -1) {
+          this.expandedRowsIds.splice(index, 1);
+        }
+      }
+    },
+  },
 };
 </script>
 
