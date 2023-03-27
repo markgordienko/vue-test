@@ -5,11 +5,20 @@
       class="table">
       <thead>
         <tr>
+          <ascend-icon 
+            v-show="isAsc"
+            class="expansion-icon" 
+          />
+          <descend-icon 
+            v-show="!isAsc"
+            class="expansion-icon" 
+          />
           <th 
             v-for="column in columns" 
             :key="column.dataKey" 
             class="text-left"
             @click="sort(column.dataKey)">
+            
             <span>
               <h2>{{ column.name }}</h2>
             </span>
@@ -53,6 +62,8 @@
 <script>
 // import ExpandableRow from './ExpandableRow.vue';
 import ExpandableRow from "./ExpandableRow.vue";
+import AscendIcon from "vue-material-design-icons/SortAscending.vue";
+import DescendIcon from "vue-material-design-icons/SortDescending.vue";
 
 export default {
   name: "DataTable",
@@ -60,7 +71,7 @@ export default {
     ExpandableRow,
     // ExpandableRow: () => import('./ExpandableRow.vue')
   },
-  components: { ExpandableRow },
+  components: { ExpandableRow, AscendIcon, DescendIcon },
   props: {
     data: {
       type: Array,
@@ -177,6 +188,12 @@ export default {
 html,
 body {
   height: 100%;
+}
+.expansion-icon {
+    position: absolute;
+    margin-top: 38px;
+    margin-left: 2%;
+    pointer-events: none;
 }
 .container {
   position: absolute;

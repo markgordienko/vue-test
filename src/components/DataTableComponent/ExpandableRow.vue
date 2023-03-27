@@ -3,7 +3,14 @@
     <div
       style="width: 100%; display: flex; flex-direction: row"
       class="table-row"
-    >
+    ><expanded-icon 
+      v-if="isExpanded && frows.length > 0"
+      class="expansion-icon" 
+    />
+      <collapsed-icon 
+        v-if="!isExpanded && frows.length > 0"
+        class="expansion-icon" 
+      />
       <div
         v-for="column in columns"
         :key="column.dataKey"
@@ -36,9 +43,12 @@
 </template>
   
   <script>
+
+import ExpandedIcon from "vue-material-design-icons/ChevronUp.vue";
+import CollapsedIcon from "vue-material-design-icons/ChevronDown.vue";
 export default {
   name: "ExpandableRow",
-  components: {},
+  components: {ExpandedIcon, CollapsedIcon},
   props: {
     row: {
       type: Object,
@@ -150,7 +160,10 @@ export default {
     padding-left: 10px;
     padding-right: 10px;
   } */
-
+.expansion-icon {
+    position: absolute;
+    margin-top: 10px;
+}
 .container {
   position: absolute;
   top: 50%;

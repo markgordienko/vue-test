@@ -1,7 +1,7 @@
 <template>
   <div>
     <button 
-      class="btn" 
+      class="add-button" 
       @click="showModal = true">
       <add-icon :size="45" />
     </button>
@@ -44,7 +44,8 @@ export default {
 </script>
 
 <style scoped>
-.btn {
+.add-button {
+  cursor: pointer;
   position: fixed;
   bottom: 50px;
   right: 50px;
@@ -58,5 +59,9 @@ export default {
   box-shadow: 0 2px 4px darkslategray;
   border-radius: 50%;
   z-index: 1;
+  transition: all 0.3s;
+}
+.add-button:active {
+  transform: scale(0.9);
 }
 </style>

@@ -28,10 +28,12 @@ export default {
 
 <style>
 html {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
   background: linear-gradient(45deg, #49a09d, #5f2c82);
 }
 .app-wrapper {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

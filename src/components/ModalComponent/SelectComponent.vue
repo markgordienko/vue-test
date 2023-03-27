@@ -10,7 +10,8 @@
       {{ selected }}
     </div>
     <div 
-      :class="{ selectHide: !open }" 
+      :class="{ 'select-hide': !open, 'scroll-container': options.length > 5
+      }"
       class="items">
       <div
         v-for="(option, i) of options"
@@ -81,7 +82,7 @@ export default {
 }
 
 .custom-select .selected.open {
-  border: 1px solid #ad8225;
+  border: 1px solid #49a09d;
   border-radius: 6px 6px 0px 0px;
 }
 
@@ -99,15 +100,17 @@ export default {
 .custom-select .items {
   max-height: 200px;
   border-radius: 0px 0px 6px 6px;
-  overflow-y: scroll;
-  border-right: 1px solid #ad8225;
-  border-left: 1px solid #ad8225;
-  border-bottom: 1px solid #ad8225;
+  border-right: 1px solid #49a09d;
+  border-left: 1px solid #49a09d;
+  border-bottom: 1px solid #49a09d;
   position: absolute;
   background-color: #ffffff;
   left: 0;
   right: 0;
   z-index: 1;
+}
+.scroll-container{
+  overflow-y: scroll;
 }
 
 .custom-select .items div {
@@ -117,10 +120,10 @@ export default {
 }
 
 .custom-select .items div:hover {
-  background-color: #ad8225;
+  background-color: #49a09d;
 }
 
-.selectHide {
+.select-hide {
   display: none;
 }
 </style>

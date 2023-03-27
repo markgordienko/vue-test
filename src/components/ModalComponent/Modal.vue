@@ -10,7 +10,7 @@
         <header 
           id="modalTitle" 
           class="modal-header">
-          <slot name="header"> Добавление пользователя </slot>
+          <slot> Добавление пользователя </slot>
           <button 
             type="button" 
             class="btn-close" 
@@ -21,17 +21,22 @@
         </header>
 
         <section 
-        
+          
           id="modalDescription" 
           class="modal-body">
           <ul class="wrapper">
+            <li class="form-row">
+              <label 
+                v-show="!isValidated && (!employeeName || !employeePhoneNumber)"
+                class="validation-notification" 
+                for="name"> Поля обязательны к заполнению! </label>
+            </li>
             <li class="form-row">
               <label for="name"> Имя </label>
               <input 
                 v-model="employeeName" 
                 type="text"
                 required>
-              <button @click="qwe">test</button>
             </li>
             
             <li class="form-row">
@@ -54,7 +59,9 @@
             </li>
           </ul>
           <div class="form-row">
-            <button @click="test">Сохранить</button>
+            <button 
+              class="button" 
+              @click="test">Сохранить</button>
           </div>
         </section>
       </div>
@@ -65,7 +72,7 @@
 
 <script>
 import SelectComponent from "./SelectComponent.vue";
-import CloseIcon from "vue-material-design-icons/CloseCircle.vue";
+import CloseIcon from "vue-material-design-icons/Close.vue";
 
 export default {
   name: "Modal",
@@ -87,6 +94,7 @@ export default {
       supervisorName: "",
       supervisorPos: 0,
       supervisorId: "",
+      isValidated: true,
     };
   },
   computed: {
@@ -99,10 +107,6 @@ export default {
     },
   },
   methods: {
-    qwe() {
-      console.log(this.data);
-      console.log(this.data);
-    },
     acceptNumber() {
       var replacedInput = this.employeePhoneNumber.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
       this.employeePhoneNumber = !replacedInput[2] ? replacedInput[1] : '(' + replacedInput[1] + ') ' + replacedInput[2] + (replacedInput[3] ? '-' + replacedInput[3] : '');
@@ -119,12 +123,11 @@ export default {
       this.$emit("close");
     },
     test() {
-      if (this.employeeName && this.employeePhoneNumber) {
+      if (this.employeeName && this.employeePhoneNumber) {       
       let supervisorId =
         this.supervisorPos === 0
           ? null
           : this.data[this.supervisorPos - 1].employeeId;
-      console.log(supervisorId);
 
       this.data.push({
         employeeName: this.employeeName,
@@ -132,6 +135,10 @@ export default {
         employeePhoneNumber: this.employeePhoneNumber,
         supervisorId: supervisorId,
       });
+      this.isValidated = true;
+      } else {
+        // console.log("why")
+        this.isValidated = false;
       }
     },
     te(val) {
@@ -173,6 +180,7 @@ input:required:focus:valid {
 
 .modal-header,
 .modal-footer {
+  font-weight: bold;
   padding: 15px;
   display: flex;
 }
@@ -190,7 +198,7 @@ input:required:focus:valid {
 
 .modal-body {
   position: relative;
-  padding: 20px 10px;
+  padding: 10px 10px;
   overflow-y: visible;
 }
 
@@ -219,6 +227,7 @@ input:required:focus:valid {
 .wrapper {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 .form-row {
@@ -241,5 +250,54 @@ input:required:focus:valid {
   background: gray;
   color: white;
   border: 0;
+}
+.button {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10rem;
+  color: black;
+  text-transform:capitalize;
+  font-size: 1rem;
+  letter-spacing: 0.15rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.button:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #49a09d;
+  border-radius: 10rem;
+  z-index: -2;
+}
+.button:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background-color: #65cac7;
+  transition: all 0.3s;
+  border-radius: 10rem;
+  z-index: -1;
+}
+.button:hover {
+  color: #424242;
+}
+.button:active, .btn-close:active {
+  transform: scale(0.9);
+}
+.button:hover:before {
+  width: 100%;
+}
+.validation-notification {
+  color: red;
 }
 </style>
