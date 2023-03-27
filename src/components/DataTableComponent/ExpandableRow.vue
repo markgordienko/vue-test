@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- TODO: Сделать компонент для отображения данных
+    по столбцам с overflow-x: scroll -->
     <div class="table-row">
       <expanded-icon
         v-if="isExpanded && filteredRows.length > 0"

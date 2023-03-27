@@ -119,6 +119,7 @@ export default {
       );
     },
 
+    //TODO: изменить структуру data на древовидную
     saveUser() {
       if (this.employeeName && this.employeePhoneNumber) {
         let supervisorId =
