@@ -1,7 +1,6 @@
 <template>
   <div 
-    :tabindex="tabindex" 
-    class="custom-select" 
+    class="select-component" 
     @blur="open = false">
     <div 
       :class="{ open: open }" 
@@ -9,17 +8,17 @@
       @click="open = !open">
       {{ selected }}
     </div>
-    <div 
-      :class="{ 'select-hide': !open, 'scroll-container': options.length > 5
-      }"
-      class="items">
+    <div
+      :class="{ 'select-hide': !open, 'scroll-container': options.length > 5 }"
+      class="items"
+    >
       <div
-        v-for="(option, i) of options"
-        :key="i"
+        v-for="(option, index) of options"
+        :key="index"
         @click="
           selected = option;
           open = false;
-          $emit('input', i);
+          $emit('input', index);
         "
       >
         {{ option }}
@@ -41,11 +40,6 @@ export default {
       required: false,
       default: null,
     },
-    tabindex: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
   },
   data() {
     return {
@@ -57,14 +51,11 @@ export default {
       open: false,
     };
   },
-  mounted() {
-    // this.$emit("input", this.selected);
-  },
 };
 </script>
 
 <style scoped>
-.custom-select {
+.select-component {
   position: relative;
   width: 186px;
   text-align: left;
@@ -73,20 +64,20 @@ export default {
   line-height: 34px;
 }
 
-.custom-select .selected {
+.select-component .selected {
   border-radius: 3px;
-  border: 1px solid #666666;
+  border: 1px solid #666;
   padding-left: 1em;
   cursor: pointer;
   user-select: none;
 }
 
-.custom-select .selected.open {
+.select-component .selected.open {
   border: 1px solid #49a09d;
   border-radius: 6px 6px 0px 0px;
 }
 
-.custom-select .selected:after {
+.select-component .selected:after {
   position: absolute;
   content: "";
   top: 22px;
@@ -97,33 +88,34 @@ export default {
   border-color: #fff transparent transparent transparent;
 }
 
-.custom-select .items {
+.select-component .items {
   max-height: 200px;
   border-radius: 0px 0px 6px 6px;
   border-right: 1px solid #49a09d;
   border-left: 1px solid #49a09d;
   border-bottom: 1px solid #49a09d;
   position: absolute;
-  background-color: #ffffff;
+  background-color: #fff;
   left: 0;
   right: 0;
   z-index: 1;
 }
-.scroll-container{
-  overflow-y: scroll;
-}
 
-.custom-select .items div {
+.select-component .items div {
   padding-left: 1em;
   cursor: pointer;
   user-select: none;
 }
 
-.custom-select .items div:hover {
+.select-component .items div:hover {
   background-color: #49a09d;
 }
 
 .select-hide {
   display: none;
+}
+
+.scroll-container {
+  overflow-y: scroll;
 }
 </style>

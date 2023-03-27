@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import Modal from "./ModalComponent/Modal.vue";
-import DataTable from "./DataTableComponent/DataTable.vue";
+import Modal from "@/components/ModalComponent/Modal.vue";
+import DataTable from "@/components/DataTableComponent/DataTable.vue";
 import AddIcon from "vue-material-design-icons/AccountPlus.vue";
 
 export default {
@@ -31,13 +31,9 @@ export default {
       data: [],
     };
   },
-  mounted() {},
   methods: {
     closeModal() {
       this.showModal = false;
-    },
-    test() {
-      console.log(this.data);
     },
   },
 };
@@ -49,11 +45,10 @@ export default {
   position: fixed;
   bottom: 50px;
   right: 50px;
-  background-color: #48abe0;
+  background-color: #53bac2;
   color: white;
   border: none;
   padding: 5px;
-  font-size: 31px;
   height: 100px;
   width: 100px;
   box-shadow: 0 2px 4px darkslategray;

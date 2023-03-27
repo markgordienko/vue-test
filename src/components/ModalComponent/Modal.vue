@@ -1,74 +1,61 @@
 <template>
   <transition name="modal-fade">
-    
     <div class="modal-backdrop">
-      <div 
-        class="modal" 
-        role="dialog" 
-        aria-labelledby="modalTitle" 
-        aria-describedby="modalDescription">
-        <header 
-          id="modalTitle" 
-          class="modal-header">
+      <div class="modal">
+        <header class="modal-header">
           <slot> Добавление пользователя </slot>
           <button 
-            type="button" 
-            class="btn-close" 
-            aria-label="Close modal" 
+            class="button-close" 
             @click="close">
-            <close-icon/>
+            <close-icon />
           </button>
         </header>
 
-        <section 
-          
-          id="modalDescription" 
-          class="modal-body">
+        <section class="modal-body">
           <ul class="wrapper">
             <li class="form-row">
-              <label 
+              <label
                 v-show="!isValidated && (!employeeName || !employeePhoneNumber)"
-                class="validation-notification" 
-                for="name"> Поля обязательны к заполнению! </label>
+                class="validation-notification"
+              >
+                Поля обязательны к заполнению!
+              </label>
             </li>
             <li class="form-row">
-              <label for="name"> Имя </label>
+              <label> Имя </label>
               <input 
                 v-model="employeeName" 
-                type="text"
-                required>
+                type="text" 
+                required >
             </li>
-            
             <li class="form-row">
               <label> Телефон </label>
-              <input 
-                v-model="employeePhoneNumber" 
+              <input
+                v-model="employeePhoneNumber"
                 type="text"
                 required
-                class="ph"
-                @input="acceptNumber">
-                
+                @input="validatePhoneNumber"
+              >
             </li>
             <li class="form-row">
-              <label for="email"> Начальник </label>
-              <SelectComponent 
-                :options="opt" 
-                v-model="supervisorName" 
-                class="select" 
-                @input="supervisorPos = $event" />
+              <label> Начальник </label>
+              <SelectComponent
+                :options="options"
+                v-model="supervisorName"
+                @input="supervisorPosition = $event"
+              />
             </li>
           </ul>
           <div class="form-row">
             <button 
-              class="button" 
-              @click="test">Сохранить</button>
+              class="button-save" 
+              @click="saveUser">Сохранить</button>
           </div>
         </section>
       </div>
     </div>
   </transition>
 </template>
-
 
 <script>
 import SelectComponent from "./SelectComponent.vue";
@@ -90,28 +77,40 @@ export default {
     return {
       employeeName: "",
       employeePhoneNumber: "",
-      id: "",
       supervisorName: "",
-      supervisorPos: 0,
       supervisorId: "",
+      supervisorPosition: 0,
       isValidated: true,
     };
   },
   computed: {
-    opt() {
-      const ar = ["Отсутствует"];
+    options() {
+      const optionsArray = ["Отсутствует"];
       this.data.forEach((el) => {
-        ar.push(el.employeeName);
+        optionsArray.push(el.employeeName);
       });
-      return ar;
+      return optionsArray;
     },
   },
   methods: {
-    acceptNumber() {
-      var replacedInput = this.employeePhoneNumber.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-      this.employeePhoneNumber = !replacedInput[2] ? replacedInput[1] : '(' + replacedInput[1] + ') ' + replacedInput[2] + (replacedInput[3] ? '-' + replacedInput[3] : '');
+    close() {
+      this.$emit("close");
     },
-    uuidv4() {
+
+    validatePhoneNumber() {
+      var replacedInput = this.employeePhoneNumber
+        .replace(/\D/g, "")
+        .match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+      this.employeePhoneNumber = !replacedInput[2]
+        ? replacedInput[1]
+        : "(" +
+          replacedInput[1] +
+          ") " +
+          replacedInput[2] +
+          (replacedInput[3] ? "-" + replacedInput[3] : "");
+    },
+
+    generateUUID() {
       return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
         (
           c ^
@@ -119,30 +118,23 @@ export default {
         ).toString(16)
       );
     },
-    close() {
-      this.$emit("close");
-    },
-    test() {
-      if (this.employeeName && this.employeePhoneNumber) {       
-      let supervisorId =
-        this.supervisorPos === 0
-          ? null
-          : this.data[this.supervisorPos - 1].employeeId;
 
-      this.data.push({
-        employeeName: this.employeeName,
-        employeeId: this.uuidv4(),
-        employeePhoneNumber: this.employeePhoneNumber,
-        supervisorId: supervisorId,
-      });
-      this.isValidated = true;
+    saveUser() {
+      if (this.employeeName && this.employeePhoneNumber) {
+        let supervisorId =
+          this.supervisorPosition === 0
+            ? null
+            : this.data[this.supervisorPosition - 1].employeeId;
+        this.data.push({
+          employeeName: this.employeeName,
+          employeeId: this.generateUUID(),
+          employeePhoneNumber: this.employeePhoneNumber,
+          supervisorId: supervisorId,
+        });
+        this.isValidated = true;
       } else {
-        // console.log("why")
         this.isValidated = false;
       }
-    },
-    te(val) {
-      // console.log(val)
     },
   },
 };
@@ -152,9 +144,15 @@ export default {
 input:invalid {
   border-color: red;
 }
+
 input:required:focus:valid {
   background-size: 25px;
 }
+
+.validation-notification {
+  color: red;
+}
+
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -168,7 +166,7 @@ input:required:focus:valid {
 }
 
 .modal {
-  background: #ffffff;
+  background: #fff;
   box-shadow: 2px 2px 20px 1px;
   overflow-x: auto;
   display: flex;
@@ -178,40 +176,19 @@ input:required:focus:valid {
   overflow: visible;
 }
 
-.modal-header,
-.modal-footer {
+.modal-header {
   font-weight: bold;
   padding: 15px;
   display: flex;
-}
-
-.modal-header {
   position: relative;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #ddd;
   justify-content: space-between;
-}
-
-.modal-footer {
-  border-top: 1px solid #eee;
-  flex-direction: column;
 }
 
 .modal-body {
   position: relative;
   padding: 10px 10px;
   overflow-y: visible;
-}
-
-.btn-close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: none;
-  font-size: 20px;
-  padding: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  background: transparent;
 }
 
 .modal-fade-enter,
@@ -236,28 +213,40 @@ input:required:focus:valid {
   padding: 0.5em;
 }
 
-.form-row>label {
+.form-row > label {
   padding: 0.5em 1em 0.5em 0;
-  /* flex: 1; */
 }
 
-.form-row>input,
-.form-row>button {
+.form-row > input,
+.form-row > button {
   padding: 0.5em;
 }
 
-.form-row>button {
+.form-row > button {
   background: gray;
   color: white;
   border: 0;
 }
-.button {
+
+.button-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  font-size: 20px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  background: transparent;
+}
+
+.button-save {
   cursor: pointer;
   display: inline-block;
   padding: 0.75rem 1.25rem;
   border-radius: 10rem;
   color: black;
-  text-transform:capitalize;
+  text-transform: capitalize;
   font-size: 1rem;
   letter-spacing: 0.15rem;
   transition: all 0.3s;
@@ -265,7 +254,8 @@ input:required:focus:valid {
   overflow: hidden;
   z-index: 1;
 }
-.button:after {
+
+.button-save:after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -276,7 +266,8 @@ input:required:focus:valid {
   border-radius: 10rem;
   z-index: -2;
 }
-.button:before {
+
+.button-save:before {
   content: "";
   position: absolute;
   bottom: 0;
@@ -288,16 +279,17 @@ input:required:focus:valid {
   border-radius: 10rem;
   z-index: -1;
 }
-.button:hover {
+
+.button-save:hover {
   color: #424242;
 }
-.button:active, .btn-close:active {
+
+.button-save:active,
+.button-close:active {
   transform: scale(0.9);
 }
-.button:hover:before {
+
+.button-save:hover:before {
   width: 100%;
-}
-.validation-notification {
-  color: red;
 }
 </style>
