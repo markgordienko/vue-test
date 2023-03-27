@@ -1,21 +1,18 @@
 <template>
-
-  <div >
+  <div>
     <table 
       v-if="filteredRows.length > 0" 
-      class="table"
-    >
+      class="table">
       <thead>
         <tr>
-          <th
-            v-for="column in columns"
-            :key="column.dataKey"
+          <th 
+            v-for="column in columns" 
+            :key="column.dataKey" 
             class="text-left"
-          >
+            @click="sort(column.dataKey)">
             <span>
               <h2>{{ column.name }}</h2>
             </span>
-
           </th>
         </tr>
       </thead>
@@ -33,86 +30,99 @@
         </tr>
       </tbody> -->
       <!-- <tbody> -->
-      
+
       <!-- </tbody> -->
     </table>
-    <ExpandableRow 
+    <h1 
+      v-else 
+      style="color: white">Таблица пока пуста :)</h1>
+    <ExpandableRow
       v-for="row in filteredRows"
       :is-expanded="isExp(row)"
       :key="row.employeeId"
       :row="row"
       :rows="rows"
-      :frows="getF(row)"
+      :frows="getF(row)" 
       :columns="columns"
       :test="test"
-      @expand="updateRowExpansion($event.employeeId)"/>
-      <!-- <h1 v-else>Таблица пока пуста :(</h1> -->
+      @expand="updateRowExpansion($event.employeeId)"
+    />
   </div>
 </template>
-  
-  <script>
+
+<script>
 // import ExpandableRow from './ExpandableRow.vue';
-  import ExpandableRow from "./ExpandableRow.vue";
+import ExpandableRow from "./ExpandableRow.vue";
 
-
-  export default {
-    name: "DataTable",
-    comments: {
-      ExpandableRow
-      // ExpandableRow: () => import('./ExpandableRow.vue')
-    },
+export default {
+  name: "DataTable",
+  comments: {
+    ExpandableRow,
+    // ExpandableRow: () => import('./ExpandableRow.vue')
+  },
   components: { ExpandableRow },
-    props: {
-        data: {
-            type: Array,
-            required: true
-        }
+  props: {
+    data: {
+      type: Array,
+      required: true,
     },
-    data() {
-      return {
-        msg: "Welcome to Your Vue.js App",
-        showModal: false,
-        columns: [
-            {
-            dataKey: "employeeName",
-            name: "Имя",
-            align: "left",
+  },
+  data() {
+    return {
+      msg: "Welcome to Your Vue.js App",
+      showModal: false,
+      columns: [
+        {
+          dataKey: "employeeName",
+          name: "Имя",
+          align: "left",
         },
         {
           dataKey: "employeePhoneNumber",
           name: "Телефон",
           align: "left",
-        },],
-        isChildExpanded: false,
-        expandedRowsIds: [],
-      };
-    },
-    computed: {
-        filteredRows() {
-            return this.data.filter(row => !row.supervisorId);
         },
+      ],
+      isChildExpanded: false,
+      expandedRowsIds: [],
+      isAsc: true,
+    };
+  },
+  computed: {
+    filteredRows() {
+      return this.data.filter((row) => !row.supervisorId);
     },
-    mounted() {
-        this.rows = this.data;
-  console.log(this.data)
+  },
+  mounted() {
+    this.rows = this.data;
+    console.log(this.data);
+  },
+  methods: {
+    sort(dataKey) {
+      if (this.isAsc) {
+        this.data.sort((a, b) => a[dataKey].localeCompare(b[dataKey]));
+      } else {
+        this.data.sort((b, a) => a[dataKey].localeCompare(b[dataKey]));
+      }
+      this.isAsc = !this.isAsc;
+
     },
-    methods: {
-      click(val) {
-console.log(val)
+    click(val) {
+      console.log(val);
     },
-      closeModal() {
-          this.showModal = false;
-        },
-        test(val) {
-        console.log(val)
-        },
-        getF(val) {
-      return this.rows.filter(row => row.supervisorId === val.employeeId);
+    closeModal() {
+      this.showModal = false;
+    },
+    test(val) {
+      console.log(val);
+    },
+    getF(val) {
+      return this.rows.filter((row) => row.supervisorId === val.employeeId);
     },
     isExp(row) {
       if (this.expandedRowsIds.includes(row.employeeId)) {
         return true;
-      } else return false
+      } else return false;
     },
     updateRowExpansion(employeeId) {
       if (!this.expandedRowsIds.includes(employeeId)) {
@@ -123,14 +133,13 @@ console.log(val)
           this.expandedRowsIds.splice(index, 1);
         }
       }
-    }
-  }
-    
-  };
-  </script>
-  
-  <style scoped>
-  /* table {
+    },
+  },
+};
+</script>
+
+<style scoped>
+/* table {
     display: table;
     border-collapse: collapse;
     border-spacing: 2px;
@@ -165,7 +174,7 @@ console.log(val)
     padding-right: 10px;
   } */
 
-  html,
+html,
 body {
   height: 100%;
 }
@@ -173,31 +182,31 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 table {
   width: 100%;
   border-collapse: collapse;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 th,
 td {
   width: 50%;
   padding: 15px;
-  background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255, 255, 255, 0.2);
   color: #fff;
 }
 thead th {
   background-color: #55608fc2;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 tbody tr:hover {
-  background-color: rgba(255,255,255,0.3);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 tbody td {
   position: relative;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 /* tbody td:hover:before {
     content: "";
@@ -210,4 +219,3 @@ tbody td {
     z-index: -1;
 } */
 </style>
-  

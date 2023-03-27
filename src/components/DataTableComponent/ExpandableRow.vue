@@ -1,17 +1,20 @@
 <template>
-  <div >
-    <div 
-      style="width: 100%; display: flex; flex-direction: row;" 
-      class="table-row">
+  <div>
+    <div
+      style="width: 100%; display: flex; flex-direction: row"
+      class="table-row"
+    >
       <div
         v-for="column in columns"
         :key="column.dataKey"
-        :style="`width: 50%; padding-left: 0px;`"
+        :style="'width: 50%'"
         class="table-data"
-        @click="test(row)
-                $emit('expand', row)">
+        @click="
+          test(row);
+          $emit('expand', row);
+        "
+      >
         {{ row[column.dataKey] }}
-
       </div>
     </div>
     <ExpandableRow
@@ -22,26 +25,21 @@
       :row="row"
       :rows="rows"
       :frows="getF(row)"
-      :columns="columns" 
+      :columns="columns"
       :test="test"
-      :style="`padding-left: 50px;`"
+      :style="`padding-left: 35px;`"
       class=""
       @click="click(row)"
       @expand="updateRowExpansion($event.employeeId)"
     />
   </div>
-
-    
 </template>
   
   <script>
-  
-  export default {
-    name: 'ExpandableRow',
-    components: {
-      
-    },
-    props: {
+export default {
+  name: "ExpandableRow",
+  components: {},
+  props: {
     row: {
       type: Object,
       required: true,
@@ -67,41 +65,41 @@
       required: true,
     },
   },
-    data: function() {
-return {
-        isChildExpanded: false,
-        expandedRowsIds: [],
+  data: function () {
+    return {
+      isChildExpanded: false,
+      expandedRowsIds: [],
     };
-},
+  },
   computed: {
     filteredRows() {
-        // console.log(this.row)
-        // console.log(this.rows.filter(row => row.supervisorId === this.row.employeeId))
-        return this.rows.filter(row => row.supervisorId === row.employeeId);
+      // console.log(this.row)
+      // console.log(this.rows.filter(row => row.supervisorId === this.row.employeeId))
+      return this.rows.filter((row) => row.supervisorId === row.employeeId);
     },
     tw() {
-        const parentRow = document.getElementsByClassName("test");
-        return parentRow.offsetWidth;
-    }
+      const parentRow = document.getElementsByClassName("test");
+      return parentRow.offsetWidth;
+    },
   },
   mounted() {
-    console.log(document.getElementsByClassName("test"))
-    console.log(this.row.employeeName)
+    console.log(document.getElementsByClassName("test"));
+    console.log(this.row.employeeName);
     // console.log(document.getElementsByClassName("test"));
   },
   methods: {
     click(val) {
-console.log(val)
+      console.log(val);
     },
     getF(val) {
-        console.log(val.employeeName + this.rows)
-      return this.rows.filter(row => row.supervisorId === val.employeeId);
+      console.log(val.employeeName + this.rows);
+      return this.rows.filter((row) => row.supervisorId === val.employeeId);
     },
     isExp(row) {
-      console.log(this.expandedRowsIds)
+      console.log(this.expandedRowsIds);
       if (this.expandedRowsIds.includes(row.employeeId)) {
         return true;
-      } else return false
+      } else return false;
     },
     updateRowExpansion(employeeId) {
       if (!this.expandedRowsIds.includes(employeeId)) {
@@ -112,13 +110,13 @@ console.log(val)
           this.expandedRowsIds.splice(index, 1);
         }
       }
-    }
-  }
-  }
-  </script>
+    },
+  },
+};
+</script>
   
   <style scoped>
-  /* table {
+/* table {
     display: table;
     border-collapse: collapse;
     border-spacing: 2px;
@@ -157,37 +155,37 @@ console.log(val)
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 table {
   width: 100%;
   border-collapse: collapse;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 th,
 .table-data {
   padding: 15px;
-  background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255, 255, 255, 0.2);
   color: #fff;
 }
 thead th {
   background-color: #55608fc2;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 .table-row:hover {
-  background-color: rgba(255,255,255,0.3);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 .table-data {
   position: relative;
-  border-bottom: 2px solid rgba(255,255,255,0.3);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
   /* border-right: 1px solid rgba(255,255,255,0.3); */
   /* border-left: 1px solid rgba(255,255,255,0.3); */
 }
 @keyframes slide-in {
-    100% {
-        transform: translateY(0%)
-    }
+  100% {
+    transform: translateY(0%);
+  }
 }
 /* tbody td:hover:before {
     content: "";

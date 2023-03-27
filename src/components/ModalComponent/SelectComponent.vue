@@ -1,6 +1,6 @@
 <template>
   <div 
-    :tabindex="tabindex"
+    :tabindex="tabindex" 
     class="custom-select" 
     @blur="open = false">
     <div 
@@ -65,18 +65,16 @@ export default {
 <style scoped>
 .custom-select {
   position: relative;
-  width: 100%;
+  width: 186px;
   text-align: left;
   outline: none;
-  height: 47px;
-  line-height: 47px;
+  height: 34px;
+  line-height: 34px;
 }
 
 .custom-select .selected {
-  background-color: #0a0a0a;
-  border-radius: 6px;
+  border-radius: 3px;
   border: 1px solid #666666;
-  color: #fff;
   padding-left: 1em;
   cursor: pointer;
   user-select: none;
@@ -100,21 +98,19 @@ export default {
 
 .custom-select .items {
   max-height: 200px;
-  color: #fff;
   border-radius: 0px 0px 6px 6px;
   overflow-y: scroll;
   border-right: 1px solid #ad8225;
   border-left: 1px solid #ad8225;
   border-bottom: 1px solid #ad8225;
   position: absolute;
-  background-color: #0a0a0a;
+  background-color: #ffffff;
   left: 0;
   right: 0;
   z-index: 1;
 }
 
 .custom-select .items div {
-  color: #fff;
   padding-left: 1em;
   cursor: pointer;
   user-select: none;

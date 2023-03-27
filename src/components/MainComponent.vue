@@ -1,47 +1,45 @@
 <template>
   <div>
-    <button @click="test">test</button>
     <button 
-      class="btn"
-      @click="showModal = true"><add-icon :size="45" /></button>
+      class="btn" 
+      @click="showModal = true">
+      <add-icon :size="45" />
+    </button>
     <DataTable :data="data" />
-    <Modal
-      v-show="showModal"
-      :data="data"
-      @close="closeModal"
-    />
+    <Modal 
+      v-show="showModal" 
+      :data="data" 
+      @close="closeModal" />
   </div>
 </template>
 
 <script>
-import Modal from './ModalComponent/Modal.vue';
-import DataTable from './DataTableComponent/DataTable.vue';
-import AddIcon from 'vue-material-design-icons/AccountPlus.vue';
-
+import Modal from "./ModalComponent/Modal.vue";
+import DataTable from "./DataTableComponent/DataTable.vue";
+import AddIcon from "vue-material-design-icons/AccountPlus.vue";
 
 export default {
   name: "MainComponent",
   components: {
-      Modal,
-      DataTable,
-      AddIcon,
-    },
+    Modal,
+    DataTable,
+    AddIcon,
+  },
   data() {
     return {
       showModal: false,
       data: [],
     };
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     closeModal() {
-        this.showModal = false;
-      },
-      test() {
-        console.log(this.data);
-      }
-  }
+      this.showModal = false;
+    },
+    test() {
+      console.log(this.data);
+    },
+  },
 };
 </script>
 
@@ -61,5 +59,4 @@ export default {
   border-radius: 50%;
   z-index: 1;
 }
-
 </style>
