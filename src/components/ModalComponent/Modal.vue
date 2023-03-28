@@ -94,20 +94,27 @@ export default {
   },
   methods: {
     close() {
+      this.employeePhoneNumber = "";
+      this.employeeName = "";
+      this.supervisorPosition = 0;
+      this.supervisorName = "Отсутствует";
       this.$emit("close");
     },
 
     validatePhoneNumber() {
-      var replacedInput = this.employeePhoneNumber
+      var x = this.employeePhoneNumber
         .replace(/\D/g, "")
-        .match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-      this.employeePhoneNumber = !replacedInput[2]
-        ? replacedInput[1]
-        : "(" +
-          replacedInput[1] +
+        .match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,4})/);
+      this.employeePhoneNumber = !x[2]
+        ? x[1]
+        : "+" +
+          x[1] +
+          " " +
+          "(" +
+          x[2] +
           ") " +
-          replacedInput[2] +
-          (replacedInput[3] ? "-" + replacedInput[3] : "");
+          x[3] +
+          (x[4] ? "-" + x[4] : "");
     },
 
     generateUUID() {
@@ -132,6 +139,10 @@ export default {
           employeePhoneNumber: this.employeePhoneNumber,
           supervisorId: supervisorId,
         });
+        this.employeePhoneNumber = "";
+        this.employeeName = "";
+        this.supervisorPosition = 0;
+        this.supervisorName = "Отсутствует";
         this.isValidated = true;
       } else {
         this.isValidated = false;
